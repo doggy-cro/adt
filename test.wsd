@@ -1,0 +1,41 @@
+@startuml start
+actor       User
+participant React #99FF99
+participant Server #F0E68C
+participant Etherscan #00BFFF
+database    Database    as DB
+
+React -> Server : method: get, endpoint: /chain-data
+Server -> DB: read all address, symbol
+Server -> Etherscan : method: get endpoint: action=balance, address, contract_address from records
+Server -> React : method: post, endpoint: /chain-data
+@enduml
+
+@startuml onClick
+actor       User
+participant React #99FF99
+participant Server #F0E68C
+participant Etherscan #00BFFF
+database    Database    as DB
+
+React -> Server : event: onClick, method: post, endpoint /chain-record, data: {address, symbol}
+Server -> Server: check if ethereum native token or smart contract
+Server -> Etherscan : method: get, endpoint: /action=balance, address, contract_address
+Etherscan -> Server : method: post, endpoint: / , data: {address, contract_address, balance}
+Server -> DB : write address, symbol to database
+Server -> React : method: post, endpoint: /chain-record, data: {account, symbol, balance}
+@enduml
+
+@startuml onSetInterval
+actor       User
+participant React #99FF99
+participant Server #F0E68C
+participant Etherscan #00BFFF
+database    Database    as DB
+
+React -> Server : event: onSetInterval, method: get, endpoint /update
+Server -> DB : read all address, symbol
+Server -> Etherscan : method: get, endpoint: /action=balance, address, contract_address
+Etherscan -> Server : method: post, endpoint: / , data: {address, contract_address, balance}
+Server -> React : method: patch, data: {balance}
+@enduml
