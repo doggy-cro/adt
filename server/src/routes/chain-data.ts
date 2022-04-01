@@ -1,55 +1,84 @@
-/* 
-routing for:
-  /chain-data
-
-route: /
-  methods:
-    POST
-      desc: write chain-data record
-      data: {address, symbol}
-    GET
-      get all chain data records
-
-route: /:id
-  methods:
-    GET
-      desc: get particular chain-data record
-    DELETE
-      desc: delete particular chain-data record
-
-route: /?coin-name
-  methods:
-    GET
-      desc: get info about all records associated with particular coin name
-*/
-
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import chainDataModel from '../models/chain-data-model';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get((req: Request, res: Response) => {
-    console.log(req.query);
-    res.send('get all records');
+  .get(async (req: Request, res: Response) => {
+    try {
+      const chainData = await chainDataModel.find();
+      res.json(chainData);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(500);
+      }
+    }
   })
-  .post((req: Request, res: Response) => {
-    console.log(req.body);
-    res.send(`create record`);
-  });
+  .post(
+    async (
+      req: Request<{}, {}, { address: string; symbol: string }, {}>,
+      res: Response
+    ) => {
+      const chainData = new chainDataModel({
+        address: req.body.address,
+        symbol: req.body.symbol,
+      });
+
+      try {
+        const newChainData = await chainData.save();
+        res.status(201).json(newChainData);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(400).json({ message: error.message });
+        } else {
+          res.status(400);
+        }
+      }
+    }
+  );
 
 router
   .route('/:id')
-  .get((req: Request, res: Response) => {
-    res.send(`get record with id ${req.params.id}`);
+  .get(getChainDataRecord, (req: Request, res: Response) => {
+    res.json(res.locals.chainData);
   })
-  .delete((req: Request, res: Response) => {
-    res.send(`detele record with id: ${req.params.id}`);
+  .delete(getChainDataRecord, async (req: Request, res: Response) => {
+    try {
+      await res.locals.chainData.remove();
+      res.json({ message: 'data chain record deleted' });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(500);
+      }
+    }
   });
 
-router.param('id', (req, res, next, id) => {
-  console.log(id);
+// middlewares
+async function getChainDataRecord(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  let chainData;
+  try {
+    chainData = await chainDataModel.findById(req.params.id);
+    if (chainData === null) {
+      return res.status(404).json('Cannot find chain data with this id');
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    } else {
+      return res.status(500);
+    }
+  }
+  res.locals.chainData = chainData;
   next();
-});
+}
 
 export default router;

@@ -1,0 +1,19 @@
+GET http://localhost:3000/chain-data
+
+###
+
+GET http://localhost:3000/chain-data/624700959b840643de233a2c
+
+###
+
+POST http://localhost:3000/chain-data
+Content-Type: application/json
+
+{
+    "address": "0xasadiasooas10320130213021039210",
+    "symbol": "SHIB"
+}
+
+###
+
+DELETE http://localhost:3000/chain-data/624700959b840643de233a2c
