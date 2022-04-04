@@ -1,14 +1,26 @@
 import express, { Request, Response, NextFunction } from 'express';
 import chainDataModel from '../models/chain-data-model';
+import { getBalance } from '../chains/ethereum/etherscan';
 
 const router = express.Router();
 
 router
   .route('/')
   .get(async (req: Request, res: Response) => {
+    let data = [];
     try {
       const chainData = await chainDataModel.find();
-      res.json(chainData);
+      const promises = chainData.map(async (item) => {
+        const balance = await getBalance(item.address, item.symbol);
+        return {
+          id: item._id,
+          address: item.address,
+          symbol: item.symbol,
+          balance: balance,
+        };
+      });
+      data = await Promise.all(promises);
+      res.json(data);
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message });
@@ -42,8 +54,24 @@ router
 
 router
   .route('/:id')
-  .get(getChainDataRecord, (req: Request, res: Response) => {
-    res.json(res.locals.chainData);
+  .get(getChainDataRecord, async (req: Request, res: Response) => {
+    try {
+      const balance = await getBalance(
+        res.locals.chainData.address,
+        res.locals.chainData.symbol
+      );
+      res.json({
+        address: res.locals.chainData.address,
+        symbol: res.locals.chainData.symbol,
+        balance: balance,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(500).json({ message: error.message });
+      } else {
+        res.status(500);
+      }
+    }
   })
   .delete(getChainDataRecord, async (req: Request, res: Response) => {
     try {

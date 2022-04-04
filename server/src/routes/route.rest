@@ -2,7 +2,7 @@ GET http://localhost:3000/chain-data
 
 ###
 
-GET http://localhost:3000/chain-data/624700959b840643de233a2c
+GET http://localhost:3000/chain-data/6249351b4681c620158023bb
 
 ###
 
@@ -10,10 +10,16 @@ POST http://localhost:3000/chain-data
 Content-Type: application/json
 
 {
-    "address": "0xasadiasooas10320130213021039210",
-    "symbol": "SHIB"
+    "address": "0x165CD37b4C644C2921454429E7F9358d18A45e14",
+    "symbol": "ETH"
 }
 
 ###
 
-DELETE http://localhost:3000/chain-data/624700959b840643de233a2c
+DELETE http://localhost:3000/chain-data/6246ffcc8eb189289ab4b132
+
+###
+
+# eth addresses example
+#0x165CD37b4C644C2921454429E7F9358d18A45e14
+#0xb77e1dae0b8ec6b7cbb64ac3a0149c401cc4a9cf
