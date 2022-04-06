@@ -1,6 +1,6 @@
-import { symbolsType, CONTRACTS } from './interfaces';
+import { CONTRACTS } from './ethTypes';
 
-export const getContractAddress = (symbol: symbolsType) => {
+export const getContractAddress = (symbol: string) => {
   try {
     return CONTRACTS[symbol];
   } catch (error) {
@@ -9,7 +9,7 @@ export const getContractAddress = (symbol: symbolsType) => {
   }
 };
 
-export const getBalanceAction = (symbol: symbolsType) => {
+export const getBalanceAction = (symbol: string) => {
   if (symbol === 'ETH') {
     return 'balance';
   } else {

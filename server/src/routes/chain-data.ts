@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import chainDataModel from '../models/chain-data-model';
-import { getBalance } from '../chains/ethereum/etherscan';
+import { getChainHandler } from '../chains/chainUtils';
 
 const router = express.Router();
 
@@ -11,7 +11,12 @@ router
     try {
       const chainData = await chainDataModel.find();
       const promises = chainData.map(async (item) => {
-        const balance = await getBalance(item.address, item.symbol);
+        const chain = getChainHandler(item.symbol);
+        if (!chain) {
+          return res.status(400).json({ message: 'symbol not supported' });
+        }
+
+        const balance = await chain.getBalance(item.address, item.symbol);
         return {
           id: item._id,
           address: item.address,
@@ -56,11 +61,18 @@ router
   .route('/:id')
   .get(getChainDataRecord, async (req: Request, res: Response) => {
     try {
-      const balance = await getBalance(
+      const chain = getChainHandler(res.locals.chainData.symbol);
+      if (!chain) {
+        return res.status(400).json({ message: 'symbol not supported' });
+      }
+
+      const balance = await chain.getBalance(
         res.locals.chainData.address,
         res.locals.chainData.symbol
       );
+
       res.json({
+        id: res.locals.chainData._id,
         address: res.locals.chainData.address,
         symbol: res.locals.chainData.symbol,
         balance: balance,

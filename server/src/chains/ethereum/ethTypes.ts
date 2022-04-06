@@ -1,4 +1,6 @@
-export const CONTRACTS = {
+type contractType<T extends string> = { [ethSymbolType in T]: string };
+
+export const CONTRACTS: contractType<string> = {
   ETH: '',
   USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
   USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
@@ -8,16 +10,6 @@ export const CONTRACTS = {
   PPT: '0xd4fa1460F537bb9085d22C7bcCB5DD450Ef28e3a',
   PXT: '0xc14830E53aA344E8c14603A91229A0b925b0B262',
 };
-
-export type symbolsType =
-  | 'ETH'
-  | 'USDC'
-  | 'USDT'
-  | 'LINK'
-  | 'SHIB'
-  | 'OMG'
-  | 'PPT'
-  | 'PXT';
 
 interface IQuery {
   module?: string;
