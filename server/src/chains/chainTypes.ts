@@ -8,6 +8,6 @@ export interface IChainHandler {
 }
 
 export type ChainSymbolsType = {
-  readonly ethSymbolsArray: Array<string>;
-  readonly neoSymbolsArray: Array<string>;
+  readonly ethereum: Array<string>;
+  readonly neo3: Array<string>;
 };

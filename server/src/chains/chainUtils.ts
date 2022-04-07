@@ -2,8 +2,8 @@ import { getBalance as ethBalance } from './ethereum/etherscan';
 import { IChainHandler, balanceClbType, ChainSymbolsType } from './chainTypes';
 
 export const chainSymbols: ChainSymbolsType = {
-  ethSymbolsArray: ['ETH', 'USDC', 'USDT', 'LINK', 'SHIB', 'OMG', 'PPT', 'PXT'],
-  neoSymbolsArray: ['NEO', 'FLM'],
+  ethereum: ['ETH', 'USDC', 'USDT', 'LINK', 'SHIB', 'OMG', 'PPT', 'PXT'],
+  neo3: ['NEO', 'FLM'],
 };
 
 class chainHandler implements IChainHandler {
@@ -15,9 +15,9 @@ class chainHandler implements IChainHandler {
 
 export const getChainHandler = <T extends string>(symbol: T) => {
   let handler;
-  if (chainSymbols.ethSymbolsArray.includes(symbol)) {
+  if (chainSymbols.ethereum.includes(symbol)) {
     handler = new chainHandler(ethBalance);
-  } else if (chainSymbols.neoSymbolsArray.includes(symbol)) {
+  } else if (chainSymbols.neo3.includes(symbol)) {
     handler = null;
   }
   return handler;

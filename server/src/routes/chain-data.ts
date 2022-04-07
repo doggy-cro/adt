@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import chainDataModel from '../models/chain-data-model';
-import { getChainHandler } from '../chains/chainUtils';
+import { getChainHandler, chainSymbols } from '../chains/chainUtils';
 
 const router = express.Router();
 
@@ -56,6 +56,18 @@ router
       }
     }
   );
+
+router.route('/symbols').get((req: Request, res: Response) => {
+  try {
+    res.json(chainSymbols);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500);
+    }
+  }
+});
 
 router
   .route('/:id')
