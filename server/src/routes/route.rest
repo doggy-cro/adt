@@ -22,6 +22,18 @@ DELETE http://localhost:3000/chain-data/6246ffcc8eb189289ab4b132
 
 GET http://localhost:3000/chain-data/symbols
 
+###
+
+GET http://localhost:3000/price
+
+###
+
+GET http://localhost:3000/price/?ticker=btc-bitcoin,eth-ethereum
+
+###
+
+GET http://localhost:3000/price/?ticker=eth-ethereum
+
 # eth addresses example
 #0x165CD37b4C644C2921454429E7F9358d18A45e14
 #0xb77e1dae0b8ec6b7cbb64ac3a0149c401cc4a9cf

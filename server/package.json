@@ -14,6 +14,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
   "dependencies": {
+    "@coinpaprika/api-nodejs-client": "^1.2.0",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "ethers": "^5.6.2",
