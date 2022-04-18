@@ -1,0 +1,29 @@
+.app .brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh;
+}
+.app .brand .adt {
+  font-size: 28px;
+  font-weight: bold;
+  color: #da291c;
+}
+.app .brand .tracker {
+  font-size: 10px;
+  font-weight: bold;
+}
+.app .brand .line {
+  margin: 10px;
+  height: 1px;
+  width: 8vw;
+  background-color: #da291c;
+}
+
+.app .board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
