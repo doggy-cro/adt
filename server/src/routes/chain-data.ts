@@ -35,6 +35,7 @@ router
     }
   })
   .post(
+    isChainDataRecordDuplicated,
     async (
       req: Request<{}, {}, { address: string; symbol: string }, {}>,
       res: Response
@@ -130,6 +131,20 @@ async function getChainDataRecord(
     }
   }
   res.locals.chainData = chainData;
+  next();
+}
+
+async function isChainDataRecordDuplicated(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const record = await chainDataModel
+    .findOne({ address: req.body.address })
+    .exec();
+  if (record !== null) {
+    return res.status(400).json({ message: 'this address already exist.' });
+  }
   next();
 }
 
