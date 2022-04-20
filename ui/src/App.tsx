@@ -1,3 +1,5 @@
+import ChainDataForm from './components/ChainDataForm';
+
 import './styles/app.css';
 
 function App() {
@@ -9,6 +11,7 @@ function App() {
         <div className='line'></div>
       </div>
       <div className='board'>
+        <ChainDataForm />
       </div>
     </div>
   );

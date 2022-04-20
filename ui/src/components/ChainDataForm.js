@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { addChainData } from '../actions/chainActions';
 import { getAddressPattern } from '../utils';
-import { routes } from '../routes';
+import { getSymbols } from '../api';
 
 import '../styles/styles.css';
 import '../styles/ChainDataForm.css';
@@ -13,19 +13,8 @@ const ChainDataForm = () => {
   const [symbols, setSymbols] = useState([]);
 
   useEffect(() => {
-    getSymbols();
+    getSymbols(setSymbols);
   }, []);
-
-  const getSymbols = async () => {
-    const symb = [];
-    const res = await fetch(routes.getSymbols);
-    const data = await res.json();
-    setSymbols([]);
-    Object.values(data).map((item) => {
-      symb.push(...item);
-    });
-    setSymbols([...symb]);
-  };
 
   const {
     register,
