@@ -14,3 +14,17 @@ export const getSymbols = async (setter: any) => {
     setter([]);
   }
 };
+
+export const saveChainData = async (data: any) => {
+  console.log(data);
+  console.log(JSON.stringify(data));
+  const response = await fetch(routes.chainData, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  const content = await response.json();
+  console.log(content);
+};

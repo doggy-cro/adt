@@ -24,23 +24,18 @@ const ChainDataForm = () => {
   } = useForm({
     defaultValues: {
       address: '',
-      symbol: symbols.length > 0 ? symbols[0] : '',
+      symbol: symbols.length > 0 ? symbols[0] : 'ETH',
     },
   });
 
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    console.log(data.symbol);
-    console.log(data.address);
     dispatch(
       addChainData({
-        // id: data.address,
-        // address: data.address,
-        // symbol: data.symbol,
-        id: '0x213i0124w',
-        address: '0x123',
-        symbol: 'ETH',
+        id: data.address,
+        address: data.address,
+        symbol: data.symbol,
         balance: 0,
       })
     );

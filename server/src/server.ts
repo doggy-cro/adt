@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import chainDataRouter from './routes/chain-data';
 import priceRouter from './routes/price';
 
@@ -20,6 +21,12 @@ const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('connected to database'));
 
+const allowedOrigin = [process.env.CORS_URL];
+const options: cors.CorsOptions = {
+  origin: allowedOrigin,
+};
+
+app.use(cors(options));
 app.use(express.json());
 app.use('/chain-data', chainDataRouter);
 app.use('/price', priceRouter);
