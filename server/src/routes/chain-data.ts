@@ -8,6 +8,7 @@ router
   .route('/')
   .get(async (req: Request, res: Response) => {
     let data = [];
+    res.set('Access-Control-Allow-Origin', process.env.CORS_URL);
     try {
       const chainData = await chainDataModel.find();
       const promises = chainData.map(async (item) => {
@@ -39,6 +40,7 @@ router
       req: Request<{}, {}, { address: string; symbol: string }, {}>,
       res: Response
     ) => {
+      res.set('Access-Control-Allow-Origin', process.env.CORS_URL);
       const chainData = new chainDataModel({
         address: req.body.address,
         symbol: req.body.symbol,
@@ -58,6 +60,7 @@ router
   );
 
 router.route('/symbols').get((req: Request, res: Response) => {
+  res.set('Access-Control-Allow-Origin', process.env.CORS_URL);
   try {
     res.json(chainSymbols);
   } catch (error) {
@@ -72,6 +75,7 @@ router.route('/symbols').get((req: Request, res: Response) => {
 router
   .route('/:id')
   .get(getChainDataRecord, async (req: Request, res: Response) => {
+    res.set('Access-Control-Allow-Origin', process.env.CORS_URL);
     try {
       const chain = getChainHandler(res.locals.chainData.symbol);
       if (!chain) {
@@ -98,6 +102,7 @@ router
     }
   })
   .delete(getChainDataRecord, async (req: Request, res: Response) => {
+    res.set('Access-Control-Allow-Origin', process.env.CORS_URL);
     try {
       await res.locals.chainData.remove();
       res.json({ message: 'data chain record deleted' });
