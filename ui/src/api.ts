@@ -16,8 +16,6 @@ export const getSymbols = async (setter: any) => {
 };
 
 export const saveChainData = async (data: any) => {
-  console.log(data);
-  console.log(JSON.stringify(data));
   const response = await fetch(routes.chainData, {
     method: 'POST',
     headers: {
@@ -25,6 +23,10 @@ export const saveChainData = async (data: any) => {
     },
     body: JSON.stringify(data),
   });
-  const content = await response.json();
-  console.log(content);
+  const res = await response.json();
+  if (res.message) {
+    return res.message;
+  } else {
+    return 'saved.';
+  }
 };

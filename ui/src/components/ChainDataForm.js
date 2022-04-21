@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { addChainData } from '../actions/chainActions';
 import { getAddressPattern } from '../utils';
-import { getSymbols } from '../api';
+import { getSymbols, saveChainData } from '../api';
 
 import '../styles/styles.css';
 import '../styles/ChainDataForm.css';
 
 const ChainDataForm = () => {
   const [symbols, setSymbols] = useState([]);
+  const [serverMessage, setServerMessage] = useState('');
 
   useEffect(() => {
     getSymbols(setSymbols);
@@ -31,14 +31,11 @@ const ChainDataForm = () => {
   const dispatch = useDispatch();
 
   const onSubmit = async (data) => {
-    dispatch(
-      addChainData({
-        id: data.address,
-        address: data.address,
-        symbol: data.symbol,
-        balance: 0,
-      })
-    );
+    const status = await saveChainData(data);
+    setServerMessage(status);
+    setTimeout(() => {
+      setServerMessage('');
+    }, 3000);
   };
 
   const pattern = getAddressPattern(watch('symbol'));
@@ -67,6 +64,9 @@ const ChainDataForm = () => {
           </select>
         </div>
         <p className='error'>{errors.address?.message}</p>
+        <p className={serverMessage !== 'saved.' ? 'error' : 'success'}>
+          {serverMessage}
+        </p>
         <button type='submit'>look on chain</button>
       </form>
     </fieldset>
