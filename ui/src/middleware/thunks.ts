@@ -1,7 +1,18 @@
-import { saveChainData } from '../api';
-import { ADD_CHAIN_DATA } from '../actions/chainActions';
+import { getChainData } from '../api';
+import { addChainDataAll, addChainData } from '../actions/chainActions';
 
-// Thunk function
-export function sendChainDataToServer(record: any) {
-  return async function sendThunk(dispatch: any, getState: any) {};
+// Thunk functions
+export async function getChainDataFromServer(dispatch: any, getState: any) {
+  const response = await getChainData();
+  dispatch(addChainDataAll(response));
+}
+
+export function getChainDataRecordFromServer(id: any) {
+  return async function getRecordFromServer(dispatch: any, getState: any) {
+    const response = await getChainData(id);
+    if (!response) {
+      return;
+    }
+    dispatch(addChainData(response));
+  };
 }

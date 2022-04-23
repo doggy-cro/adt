@@ -30,3 +30,20 @@ export const saveChainData = async (data: any) => {
     return 'saved.';
   }
 };
+
+export const getChainData = async (id: any = null) => {
+  let url;
+  try {
+    if (id) {
+      url = `${routes.chainData}/${id}`;
+    } else {
+      url = routes.chainData;
+    }
+    const response = await fetch(url);
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    console.error("can't fetch chain-data from server.");
+    return null;
+  }
+};

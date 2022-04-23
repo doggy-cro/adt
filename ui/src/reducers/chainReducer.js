@@ -1,5 +1,8 @@
+import _ from 'lodash';
+
 import {
   ADD_CHAIN_DATA,
+  ADD_CHAIN_DATA_ALL,
   EDIT_CHAIN_DATA,
   DELETE_CHAIN_DATA,
 } from '../actions/chainActions';
@@ -8,7 +11,9 @@ import {
 export const chainReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_CHAIN_DATA:
-      return [...state, action.record];
+      return [...state, ..._.differenceWith([action.record], state, _.isEqual)];
+    case ADD_CHAIN_DATA_ALL:
+      return [...state, ..._.differenceWith(action.record, state, _.isEqual)];
     case EDIT_CHAIN_DATA:
       return state.map((item) => {
         if (item.id !== action.record.address) {

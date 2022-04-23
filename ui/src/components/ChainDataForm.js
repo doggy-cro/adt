@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { getAddressPattern } from '../utils';
 import { getSymbols, saveChainData } from '../api';
+import { getChainDataFromServer } from '../middleware/thunks';
 
 import '../styles/styles.css';
 import '../styles/ChainDataForm.css';
@@ -14,6 +15,7 @@ const ChainDataForm = () => {
 
   useEffect(() => {
     getSymbols(setSymbols);
+    dispatch(getChainDataFromServer);
   }, []);
 
   const {
@@ -32,6 +34,7 @@ const ChainDataForm = () => {
 
   const onSubmit = async (data) => {
     const status = await saveChainData(data);
+    dispatch(getChainDataFromServer);
     setServerMessage(status);
     setTimeout(() => {
       setServerMessage('');
