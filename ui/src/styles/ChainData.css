@@ -1,0 +1,16 @@
+.chain-data-container {
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 30px;
+  padding: 20px;
+}
+.chain-data-container button {
+  font-size: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  margin: 5px;
+}
+.chain-data-container .error {
+  text-align: center;
+}

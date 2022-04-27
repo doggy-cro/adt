@@ -24,7 +24,10 @@ router
           balance: balance,
         };
       });
+
       data = await Promise.all(promises);
+
+      data = data.filter((item) => item.balance !== -1);
       res.json(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -83,7 +86,11 @@ router
         res.locals.chainData.address,
         res.locals.chainData.symbol
       );
-
+      if (balance === -1) {
+        return res.status(429).json({ message: 'Max rate limit reached' });
+      } else if (balance === -2) {
+        return res.status(502).json({ message: 'Service Unavailable' });
+      }
       res.json({
         id: res.locals.chainData._id,
         address: res.locals.chainData.address,

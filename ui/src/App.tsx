@@ -1,4 +1,5 @@
 import ChainDataForm from './components/ChainDataForm';
+import ChainDataList from './components/ChainDataList';
 
 import './styles/app.css';
 
@@ -12,6 +13,7 @@ function App() {
       </div>
       <div className='board'>
         <ChainDataForm />
+        <ChainDataList />
       </div>
     </div>
   );

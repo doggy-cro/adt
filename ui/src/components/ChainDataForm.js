@@ -11,11 +11,13 @@ import '../styles/ChainDataForm.css';
 
 const ChainDataForm = () => {
   const [symbols, setSymbols] = useState([]);
-  const [serverMessage, setServerMessage] = useState('');
+  const [serverMessagePost, setServerMessagePost] = useState('');
+  const [serverMessageGet, setServerMessageGet] = useState('');
 
   useEffect(() => {
     getSymbols(setSymbols);
-    dispatch(getChainDataFromServer);
+    const getChainDataFromSrv = getChainDataFromServer(setServerMessageGet);
+    dispatch(getChainDataFromSrv);
   }, []);
 
   const {
@@ -34,10 +36,12 @@ const ChainDataForm = () => {
 
   const onSubmit = async (data) => {
     const status = await saveChainData(data);
-    dispatch(getChainDataFromServer);
-    setServerMessage(status);
+    const getChainDataFromSrv = getChainDataFromServer(setServerMessageGet);
+    dispatch(getChainDataFromSrv);
+    setServerMessagePost(status);
+
     setTimeout(() => {
-      setServerMessage('');
+      setServerMessagePost('');
     }, 3000);
   };
 
@@ -67,9 +71,10 @@ const ChainDataForm = () => {
           </select>
         </div>
         <p className='error'>{errors.address?.message}</p>
-        <p className={serverMessage !== 'saved.' ? 'error' : 'success'}>
-          {serverMessage}
+        <p className={serverMessagePost !== 'saved.' ? 'error' : 'success'}>
+          {serverMessagePost}
         </p>
+        <p className='error'>{serverMessageGet}</p>
         <button type='submit'>look on chain</button>
       </form>
     </fieldset>

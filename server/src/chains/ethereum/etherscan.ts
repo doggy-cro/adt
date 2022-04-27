@@ -26,9 +26,13 @@ export const getBalance: balanceClbType = async <T>(
     const apiRequest = `${etherscan_url}${query}&apikey=${process.env.ETHSCAN_API_KEY}`;
 
     const apiResponse = await axios.get(apiRequest);
+
+    if (apiResponse['data']['message'] === 'NOTOK') {
+      return -1;
+    }
     return Number(ethers.utils.formatEther(apiResponse['data']['result']));
   } catch (error) {
     console.log(error);
-    return Number(0);
+    return Number(-1);
   }
 };
