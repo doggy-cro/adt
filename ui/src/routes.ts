@@ -1,4 +1,6 @@
+const server_url = 'http://localhost:5000';
+
 export const routes = {
-  chainData: 'http://localhost:3000/chain-data',
-  getSymbols: 'http://localhost:3000/chain-data/symbols',
+  chainData: `${server_url}/chain-data`,
+  getSymbols: `${server_url}/chain-data/symbols`,
 };

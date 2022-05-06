@@ -8,7 +8,7 @@ import priceRouter from './routes/price';
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 if (typeof process.env['DATABASE_URL'] === 'string') {
   mongoose.connect(process.env.DATABASE_URL);
@@ -21,12 +21,10 @@ const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('connected to database'));
 
-const allowedOrigin = [process.env.CORS_URL];
-const options: cors.CorsOptions = {
-  origin: allowedOrigin,
-};
+app.use(cors());
+// @ts-ignore
+app.options('*', cors());
 
-app.use(cors(options));
 app.use(express.json());
 app.use('/chain-data', chainDataRouter);
 app.use('/price', priceRouter);

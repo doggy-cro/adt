@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    stdin_open: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./ui/:/ui
+      - /ui/node_modules
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
+    driver: local
