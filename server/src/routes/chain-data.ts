@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import chainDataModel from '../models/chain-data-model';
 import { getChainHandler, chainSymbols } from '../chains/chainUtils';
+import { chainDataType } from '../chains/chainTypes';
 
 const router = express.Router();
 
