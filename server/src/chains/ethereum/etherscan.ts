@@ -22,7 +22,11 @@ export const getBalance: balanceClbType = async <T>(
       contractaddress = getContractAddress(symbol);
     }
 
-    const query = new QueryCls(action, account, contractaddress).getQuery();
+    const query = new QueryCls(
+      action,
+      account.trim(),
+      contractaddress
+    ).getQuery();
     const apiRequest = `${etherscan_url}${query}&apikey=${process.env.ETHSCAN_API_KEY}`;
 
     const apiResponse = await axios.get(apiRequest);
@@ -30,7 +34,12 @@ export const getBalance: balanceClbType = async <T>(
     if (apiResponse['data']['message'] === 'NOTOK') {
       return -1;
     }
-    return Number(ethers.utils.formatEther(apiResponse['data']['result']));
+
+    const balance =
+      symbol === 'USDC'
+        ? Number(ethers.utils.formatUnits(apiResponse['data']['result'], 6))
+        : Number(ethers.utils.formatEther(apiResponse['data']['result']));
+    return balance;
   } catch (error) {
     console.log(error);
     return Number(-1);

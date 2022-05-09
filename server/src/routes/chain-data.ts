@@ -18,6 +18,10 @@ router
         }
 
         const balance = await chain.getBalance(item.address, item.symbol);
+
+        if (balance === -1) {
+          return res.status(400).json({ message: 'etherscan NOTOK' });
+        }
         return {
           id: item._id,
           address: item.address,
