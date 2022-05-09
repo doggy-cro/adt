@@ -21,9 +21,19 @@
   background-color: #da291c;
 }
 
-.app .board {
+.app .form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
+.app .dashboard {
+  display: flex;
+}
+
+.app .dashboard .cards {
+  font-size: 10px;
+  border: 1px solid black;
+}
+
