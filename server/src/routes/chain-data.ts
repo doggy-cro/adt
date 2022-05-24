@@ -19,9 +19,6 @@ router
 
         const balance = await chain.getBalance(item.address, item.symbol);
 
-        if (balance === -1) {
-          return res.status(400).json({ message: 'etherscan NOTOK' });
-        }
         return {
           id: item._id,
           address: item.address,
@@ -152,7 +149,7 @@ async function isChainDataRecordDuplicated(
   next: NextFunction
 ) {
   const record = await chainDataModel
-    .findOne({ address: req.body.address })
+    .findOne({ address: req.body.address, symbol: req.body.symbol })
     .exec();
   if (record !== null) {
     return res.status(400).json({ message: 'this address already exist.' });

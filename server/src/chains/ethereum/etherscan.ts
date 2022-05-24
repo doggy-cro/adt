@@ -35,10 +35,12 @@ export const getBalance: balanceClbType = async <T>(
       return -1;
     }
 
-    const balance =
-      symbol === 'USDC'
-        ? Number(ethers.utils.formatUnits(apiResponse['data']['result'], 6))
-        : Number(ethers.utils.formatEther(apiResponse['data']['result']));
+    let decimal = 18;
+    if (symbol === 'USDC') decimal = 6;
+    if (symbol === 'HEX') decimal = 8;
+    const balance = Number(
+      ethers.utils.formatUnits(apiResponse['data']['result'], decimal)
+    );
     return balance;
   } catch (error) {
     console.log(error);
