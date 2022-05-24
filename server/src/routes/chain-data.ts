@@ -1,7 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import chainDataModel from '../models/chain-data-model';
-import { getChainHandler, chainSymbols } from '../chains/chainUtils';
-import { chainDataType } from '../chains/chainTypes';
+import {
+  getChainHandler,
+  ethereumChain,
+  neo3Chain,
+} from '../chains/chainUtils';
 
 const router = express.Router();
 
@@ -12,16 +15,32 @@ router
     try {
       const chainData = await chainDataModel.find();
       const promises = chainData.map(async (item) => {
-        const chain = getChainHandler(item.symbol);
-        if (!chain) {
-          return res.status(400).json({ message: 'symbol not supported' });
+        const chainHandler = getChainHandler(item.chain);
+        if (!chainHandler) {
+          return res
+            .status(400)
+            .json({ message: 'chain or symbol not supported' });
         }
 
-        const balance = await chain.getBalance(item.address, item.symbol);
+        let address = '0x';
+        chainHandler.details.coins.every((coin) => {
+          if (coin.symbol === item.symbol) {
+            address = coin.address;
+            return false;
+          }
+          return true;
+        });
+
+        const balance = await chainHandler.getBalance(
+          item.account,
+          item.symbol,
+          address
+        );
 
         return {
           id: item._id,
-          address: item.address,
+          chain: item.chain,
+          account: item.account,
           symbol: item.symbol,
           balance: balance,
         };
@@ -29,7 +48,7 @@ router
 
       data = await Promise.all(promises);
 
-      data = data.filter((item) => item.balance !== -1);
+      data = data.filter((i) => i.balance !== -1);
       res.json(data);
     } catch (error) {
       if (error instanceof Error) {
@@ -42,11 +61,17 @@ router
   .post(
     isChainDataRecordDuplicated,
     async (
-      req: Request<{}, {}, { address: string; symbol: string }, {}>,
+      req: Request<
+        {},
+        {},
+        { chain: string; account: string; symbol: string },
+        {}
+      >,
       res: Response
     ) => {
       const chainData = new chainDataModel({
-        address: req.body.address,
+        chain: req.body.chain,
+        account: req.body.account,
         symbol: req.body.symbol,
       });
 
@@ -63,9 +88,9 @@ router
     }
   );
 
-router.route('/symbols').get((req: Request, res: Response) => {
+router.route('/form-data').get((req: Request, res: Response) => {
   try {
-    res.json(chainSymbols);
+    res.json({ chains: [ethereumChain, neo3Chain] });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });
@@ -79,14 +104,25 @@ router
   .route('/:id')
   .get(getChainDataRecord, async (req: Request, res: Response) => {
     try {
-      const chain = getChainHandler(res.locals.chainData.symbol);
-      if (!chain) {
-        return res.status(400).json({ message: 'symbol not supported' });
+      const chainHandler = getChainHandler(res.locals.chainData.chain);
+      if (!chainHandler) {
+        return res
+          .status(400)
+          .json({ message: 'chain or symbol not supported' });
       }
 
-      const balance = await chain.getBalance(
-        res.locals.chainData.address,
-        res.locals.chainData.symbol
+      let address = '0x';
+      chainHandler.details.coins.every((coin) => {
+        if (coin.symbol === res.locals.chainData.symbol) {
+          address = coin.address;
+          return false;
+        }
+        return true;
+      });
+      const balance = await chainHandler.getBalance(
+        res.locals.chainData.account,
+        res.locals.chainData.symbol,
+        address
       );
       if (balance === -1) {
         return res.status(429).json({ message: 'Max rate limit reached' });
@@ -95,7 +131,7 @@ router
       }
       res.json({
         id: res.locals.chainData._id,
-        address: res.locals.chainData.address,
+        account: res.locals.chainData.account,
         symbol: res.locals.chainData.symbol,
         balance: balance,
       });
@@ -149,10 +185,10 @@ async function isChainDataRecordDuplicated(
   next: NextFunction
 ) {
   const record = await chainDataModel
-    .findOne({ address: req.body.address, symbol: req.body.symbol })
+    .findOne({ account: req.body.account, symbol: req.body.symbol })
     .exec();
   if (record !== null) {
-    return res.status(400).json({ message: 'this address already exist.' });
+    return res.status(400).json({ message: 'this record already exist.' });
   }
   next();
 }

@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 
 const chainDataSchema = new mongoose.Schema({
-  address: {
+  chain: {
+    type: String,
+    required: true,
+  },
+  account: {
     type: String,
     required: true,
   },

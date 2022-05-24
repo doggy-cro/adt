@@ -9,8 +9,10 @@ export const getContractAddress = (symbol: string) => {
   }
 };
 
-export const getBalanceAction = (symbol: string) => {
-  if (symbol === 'ETH') {
+export const getBalanceAction = (address: string) => {
+  if (address === '0x') {
+    return '0x';
+  } else if (address === '') {
     return 'balance';
   } else {
     return 'tokenbalance';

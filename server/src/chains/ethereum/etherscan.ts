@@ -12,21 +12,17 @@ const etherscan_url = 'https://api.etherscan.io/api';
 
 export const getBalance: balanceClbType = async <T>(
   account: string,
-  symbol: string
+  symbol: string,
+  address: string
 ): Promise<number> => {
-  let contractaddress;
   try {
-    const action = getBalanceAction(symbol);
-
-    if (action === 'tokenbalance') {
-      contractaddress = getContractAddress(symbol);
+    if (address === '0x') {
+      console.error('coin not supported!');
+      return -1;
     }
 
-    const query = new QueryCls(
-      action,
-      account.trim(),
-      contractaddress
-    ).getQuery();
+    const action = getBalanceAction(address);
+    const query = new QueryCls(action, account.trim(), address).getQuery();
     const apiRequest = `${etherscan_url}${query}&apikey=${process.env.ETHSCAN_API_KEY}`;
 
     const apiResponse = await axios.get(apiRequest);

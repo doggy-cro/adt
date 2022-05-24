@@ -1,38 +1,39 @@
-GET http://localhost:3000/chain-data
+GET http://localhost:5000/chain-data
 
 ###
 
-GET http://localhost:3000/chain-data/624934b74681c620158023b9
+GET http://localhost:5000/chain-data/624934b74681c620158023b9
 
 ###
 
-POST http://localhost:3000/chain-data
+POST http://localhost:5000/chain-data
 Content-Type: application/json
 
 {
-    "address": "0x165CD37b4C644C2921454429E7F9358d18A45e14",
+    "chain": "ethereum",
+    "account": "0x12A0c672fa0F896d72F62e7D572d1a745B86f279",
     "symbol": "ETH"
 }
 
 ###
 
-DELETE http://localhost:3000/chain-data/6246ffcc8eb189289ab4b132
+DELETE http://localhost:5000/chain-data/628bf396824858a46898d0b0
 
 ###
 
-GET http://localhost:3000/chain-data/symbols
+GET http://localhost:5000/chain-data/form-data
 
 ###
 
-GET http://localhost:3000/price
+GET http://localhost:5000/price
 
 ###
 
-GET http://localhost:3000/price/?ticker=btc-bitcoin,eth-ethereum
+GET http://localhost:5000/price/?ticker=btc-bitcoin,eth-ethereum
 
 ###
 
-GET http://localhost:3000/price/?ticker=eth-ethereum
+GET http://localhost:5000/price/?ticker=eth-ethereum
 
 # eth addresses example
 #0x165CD37b4C644C2921454429E7F9358d18A45e14

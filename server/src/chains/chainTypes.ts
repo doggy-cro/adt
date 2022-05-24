@@ -1,20 +1,19 @@
 export type balanceClbType = <T extends string>(
   account: string,
-  symbol: T
+  symbol: T,
+  address: string
 ) => Promise<number>;
 
 export interface IChainHandler {
   getBalance: balanceClbType;
 }
 
-export type ChainSymbolsType = {
-  readonly ethereum: Array<string>;
-  readonly neo3: Array<string>;
-};
-
-export type chainDataType = {
-  id: string;
-  address: string;
+export interface CoinDetailsI {
   symbol: string;
-  balance: string;
-};
+  address: string;
+}
+
+export interface ChainDetailsI {
+  chain: string;
+  coins: Array<CoinDetailsI>;
+}
