@@ -29,7 +29,7 @@ GET http://localhost:5000/price
 
 ###
 
-GET http://localhost:5000/price/?ticker=btc-bitcoin,eth-ethereum
+GET http://localhost:5000/price/?ticker=eth-ethereum,hex-hex
 
 ###
 

@@ -1,17 +1,15 @@
 import { routes } from './routes';
 
-export const getSymbols = async (setter: any) => {
+export const getMetadata = async (setter: any) => {
   const s: Array<string> = [];
   try {
-    const res = await fetch(routes.getSymbols);
+    const res = await fetch(routes.getFormData);
     const data = await res.json();
-    Object.values(data).map((item: any) => {
-      s.push(...item);
-    });
-    setter(s);
+    const chains = data.chains;
+    setter(chains);
   } catch (error) {
     console.error("can't fetch symbols from server.");
-    setter([]);
+    setter({});
   }
 };
 
@@ -68,6 +66,22 @@ export const delChainData = async (id: any) => {
     return res;
   } catch (error) {
     console.error("can't fetch chain-data from server.");
+    return null;
+  }
+};
+
+export const getCPaprikaPricesForTokens = async (symbols: Array<string>) => {
+  let url;
+  try {
+    url = `${routes.getPriceFromCPaprika}/?ticker=${symbols.join(',')}`;
+    const response = await fetch(url);
+    if (response.status !== 200) {
+      return response;
+    }
+    const res = await response.json();
+    return res;
+  } catch (error) {
+    console.error("can't fetch coinpaprika prices from server.");
     return null;
   }
 };

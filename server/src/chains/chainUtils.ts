@@ -15,6 +15,7 @@ export const ethereumChain: ChainDetailsI = {
     { symbol: 'HEX', address: '0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39' },
     { symbol: 'DOS', address: '0x0A913beaD80F321E7Ac35285Ee10d9d922659cB7' },
   ],
+  pattern: '[a-zA-Z0-9]{42}',
 };
 
 export const neo3Chain: ChainDetailsI = {
@@ -23,6 +24,7 @@ export const neo3Chain: ChainDetailsI = {
     { symbol: 'NEO', address: '' },
     { symbol: 'FLM', address: '0x' },
   ],
+  pattern: '[.^*]',
 };
 
 class chainHandler implements IChainHandler {

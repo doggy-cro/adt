@@ -45,6 +45,12 @@ async function handleCoinpaprikaApi(
       return res.status(500);
     }
   }
+  records = records.map((obj) => ({
+    // @ts-ignore
+    symbol: obj.symbol,
+    // @ts-ignore
+    price: obj.quotes.USD.price,
+  }));
   res.locals.records = records;
   next();
 }

@@ -3,11 +3,12 @@ export const ADD_CHAIN_DATA_ALL = 'chain/add/all';
 export const EDIT_CHAIN_DATA = 'chain/edit';
 export const DELETE_CHAIN_DATA = 'chain/delete';
 
-export const addChainData = ({ id, address, symbol, balance }) => ({
+export const addChainData = ({ id, chain, account, symbol, balance }) => ({
   type: ADD_CHAIN_DATA,
   record: {
     id,
-    address,
+    chain,
+    account,
     symbol,
     balance,
   },
@@ -18,10 +19,11 @@ export const addChainDataAll = (data) => ({
   record: data,
 });
 
-export const editChainData = ({ address, symbol }) => ({
+export const editChainData = ({ chain, account, symbol }) => ({
   type: EDIT_CHAIN_DATA,
   record: {
-    address,
+    chain,
+    account,
     symbol,
   },
 });

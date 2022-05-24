@@ -1,9 +1,10 @@
-import { getChainData, delChainData } from '../api';
+import { getChainData, delChainData, getCPaprikaPricesForTokens } from '../api';
 import {
   addChainDataAll,
   addChainData,
   deleteChainData,
 } from '../actions/chainActions';
+import { addPriceDataAll } from '../actions/priceActions';
 
 // Thunk functions
 export function getChainDataFromServer(setter: any) {
@@ -17,8 +18,22 @@ export function getChainDataFromServer(setter: any) {
       }, 3000);
       return;
     }
-    console.log(response);
     dispatch(addChainDataAll(response));
+  };
+}
+
+export function getPricesFromServer(setter: any, symbols: Array<string>) {
+  return async function getPricesFromSrv(dispatch: any, getState: any) {
+    const response = await getCPaprikaPricesForTokens(symbols);
+    if (response.status === 503) {
+      const data = await response.json();
+      setter(data.message);
+      setTimeout(() => {
+        setter('');
+      }, 3000);
+      return;
+    }
+    dispatch(addPriceDataAll(response));
   };
 }
 

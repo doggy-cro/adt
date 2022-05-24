@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteChainDataRecordFromServer } from '../middleware/thunks';
+import { getPrice } from '../utils';
+
 import '../styles/ChainData.css';
 import '../styles/styles.css';
 
-const ChainData = ({ id, address, symbol, balance }) => {
+const ChainData = ({ account, content }) => {
   const [wantDelete, setWantDelete] = useState(false);
   const [message, setMessage] = useState('');
-  const dispatch = useDispatch();
 
-  const handleDelete = () => {
-    if (wantDelete) {
+  const dispatch = useDispatch();
+  const prices = useSelector((state) => state.priceData);
+
+  const handleDelete = (id) => {
+    if (wantDelete === id) {
       const deleteRecordFromServer = deleteChainDataRecordFromServer(
         id,
         setMessage
@@ -22,23 +26,33 @@ const ChainData = ({ id, address, symbol, balance }) => {
       }, 3000);
       return;
     }
-    setWantDelete(true);
+    setWantDelete(id);
   };
+
   const handleCancel = () => {
     setWantDelete(false);
   };
 
   return (
     <div className='chain-data-container'>
-      <p className='error'>{message}</p>
-      <p>address: {address}</p>
-      <p>
-        balance: {balance} {symbol}
-      </p>
-      <button onClick={handleDelete}>
-        {wantDelete ? 'are you sure?' : 'delete'}
-      </button>
-      {wantDelete ? <button onClick={handleCancel}>cancel</button> : null}
+      {message ? <p className='error'>{message.message}</p> : null}
+      <p>chain: {content[0].chain}</p>
+      <p>account: {account}</p>
+      {content.map((token) => (
+        <div key={token.id}>
+          <p>
+            {token.balance} {token.symbol}
+          </p>
+          <p>{getPrice(token.symbol, prices)} USD</p>
+          <p>value: {token.balance * getPrice(token.symbol, prices)} USD</p>
+          <button onClick={() => handleDelete(token.id)}>
+            {wantDelete === token.id ? 'are you sure?' : 'delete'}
+          </button>
+          {wantDelete === token.id ? (
+            <button onClick={handleCancel}>cancel</button>
+          ) : null}
+        </div>
+      ))}
     </div>
   );
 };

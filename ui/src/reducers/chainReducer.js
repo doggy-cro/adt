@@ -7,7 +7,7 @@ import {
   DELETE_CHAIN_DATA,
 } from '../actions/chainActions';
 
-// complete chain record {id: '', address: '', symbol: ''}
+// complete chain record {id: '', chain: '', account: '', symbol: '', balance: ''}
 export const chainReducer = (state = [], action) => {
   switch (action.type) {
     case ADD_CHAIN_DATA:
@@ -16,13 +16,14 @@ export const chainReducer = (state = [], action) => {
       return [...state, ..._.differenceWith(action.record, state, _.isEqual)];
     case EDIT_CHAIN_DATA:
       return state.map((item) => {
-        if (item.id !== action.record.address) {
+        if (item.id !== action.record.id) {
           return item;
         }
-        const { address, symbol } = action.record;
+        const { chain, account, symbol } = action.record;
         return {
           id: item.id,
-          address,
+          chain,
+          account,
           symbol,
           balance: item.balance,
         };

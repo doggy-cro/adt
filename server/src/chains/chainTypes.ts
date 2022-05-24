@@ -16,4 +16,5 @@ export interface CoinDetailsI {
 export interface ChainDetailsI {
   chain: string;
   coins: Array<CoinDetailsI>;
+  pattern: string;
 }

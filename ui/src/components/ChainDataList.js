@@ -3,21 +3,28 @@ import ChainData from './ChainData';
 
 const ChainDataList = () => {
   const data = useSelector((state) => state.chainData);
-  const assets = data.map((asset) => {
+  let groupByAccount = {};
+  data.map((item) => {
+    if (groupByAccount[item.account]) {
+      groupByAccount[item.account] = [...groupByAccount[item.account], item];
+    } else {
+      groupByAccount[item.account] = [item];
+    }
+  });
+
+  const boxes = Object.keys(groupByAccount).map((account) => {
     return (
       <ChainData
-        key={asset.id}
-        id={asset.id}
-        address={asset.address}
-        symbol={asset.symbol}
-        balance={asset.balance}
+        key={account}
+        account={account}
+        content={groupByAccount[account]}
       />
     );
   });
 
   return (
     <div>
-      <ul>{assets}</ul>
+      <ul>{boxes}</ul>
     </div>
   );
 };
