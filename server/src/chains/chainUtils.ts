@@ -2,7 +2,18 @@ import { getBalance as ethBalance } from './ethereum/etherscan';
 import { IChainHandler, balanceClbType, ChainSymbolsType } from './chainTypes';
 
 export const chainSymbols: ChainSymbolsType = {
-  ethereum: ['ETH', 'USDC', 'USDT', 'LINK', 'SHIB', 'OMG', 'PPT', 'PXT'],
+  ethereum: [
+    'ETH',
+    'USDC',
+    'USDT',
+    'LINK',
+    'SHIB',
+    'OMG',
+    'PPT',
+    'PXT',
+    'HEX',
+    'DOS',
+  ],
   neo3: ['NEO', 'FLM'],
 };
 

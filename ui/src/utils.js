@@ -1,5 +1,16 @@
 const CHAINS = {
-  ETH: ['ETH', 'LINK', 'SHIB', 'USDC', 'USDT', 'OMG'],
+  ETH: [
+    'ETH',
+    'LINK',
+    'SHIB',
+    'USDC',
+    'USDT',
+    'OMG',
+    'PPT',
+    'PXT',
+    'HEX',
+    'DOS',
+  ],
   BTC: ['BTC'],
   N3: ['NEO', 'FLM'],
 };
