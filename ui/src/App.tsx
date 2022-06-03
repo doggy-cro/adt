@@ -18,16 +18,17 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("useEffect call!")
     if (metadata.length === 0) {
       getMetadata(setMetadata);
     }
 
-    const getChainDataFromSrv = getChainDataFromServer(setSrvMsg);
-    const getPricesFromSrv = getPricesFromServer(setSrvMsg2, ['eth-ethereum', 'hex-hex']);
-    //@ts-ignore
-    dispatch(getChainDataFromSrv);
+    const getPricesFromSrv = getPricesFromServer(setSrvMsg2, ['eth-ethereum', 'hex-hex', 'link-chainlink', 'usdc-usd-coin']);
     //@ts-ignore
     dispatch(getPricesFromSrv);
+    const getChainDataFromSrv = getChainDataFromServer(setSrvMsg);
+    //@ts-ignore
+    dispatch(getChainDataFromSrv);
   }, []);
 
   return (

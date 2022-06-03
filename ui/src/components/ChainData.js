@@ -34,16 +34,23 @@ const ChainData = ({ account, content }) => {
   };
 
   return (
-    <div className='chain-data-container'>
+    <div className='box'>
       {message ? <p className='error'>{message.message}</p> : null}
-      <p>chain: {content[0].chain}</p>
-      <p>account: {account}</p>
+      <div className='general-data'>
+        <p>chain: {content[0].chain}</p>
+        <p>account: {account}</p>
+      </div>
       {content.map((token) => (
-        <div key={token.id}>
+        <div key={token.id} className='detailed-data'>
           <p>
             {token.balance} {token.symbol}
           </p>
-          <p>{getPrice(token.symbol, prices)} USD</p>
+          <p>
+            {getPrice(token.symbol, prices) > 0
+              ? getPrice(token.symbol, prices)
+              : 'unavailable '}
+            <span className='usd'> USD</span>
+          </p>
           <p>value: {token.balance * getPrice(token.symbol, prices)} USD</p>
           <button onClick={() => handleDelete(token.id)}>
             {wantDelete === token.id ? 'are you sure?' : 'delete'}
