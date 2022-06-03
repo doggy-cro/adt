@@ -72,10 +72,10 @@ const ChainDataForm = ({ metadata }) => {
   }
 
   return (
-    <fieldset>
-      <legend>fill chain data and check balance</legend>
+    <div>
+      {/* <legend>fill chain data and check balance</legend> */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='input-section'>
+        <div className='form-container'>
           <input
             {...register('account', {
               required: 'Account address is required',
@@ -88,15 +88,17 @@ const ChainDataForm = ({ metadata }) => {
           />
           <select {...register('chain')}>{chainsJsx}</select>
           <select {...register('symbol')}>{symbolsJsx}</select>
+          <button type='submit'>look on chain</button>
+          <div className='info-box'>
+            <p className='error'>{errors.account?.message}</p>
+            <p className={serverMessagePost !== 'saved.' ? 'error' : 'success'}>
+              {serverMessagePost}
+            </p>
+            <p className='error'>{serverMessageGet}</p>
+          </div>
         </div>
-        <p className='error'>{errors.account?.message}</p>
-        <p className={serverMessagePost !== 'saved.' ? 'error' : 'success'}>
-          {serverMessagePost}
-        </p>
-        <p className='error'>{serverMessageGet}</p>
-        <button type='submit'>look on chain</button>
       </form>
-    </fieldset>
+    </div>
   );
 };
 

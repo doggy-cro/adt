@@ -4,7 +4,7 @@ import { deleteChainDataRecordFromServer } from '../middleware/thunks';
 import { getPrice } from '../utils';
 
 import '../styles/ChainData.css';
-import '../styles/styles.css';
+// import '../styles/styles.css';
 
 const ChainData = ({ account, content }) => {
   const [wantDelete, setWantDelete] = useState(false);

@@ -1,8 +1,11 @@
 import { useSelector } from 'react-redux';
 import ChainData from './ChainData';
 
+import '../styles/ChainDataList.css';
+
 const ChainDataList = () => {
   const data = useSelector((state) => state.chainData);
+
   let groupByAccount = {};
   data.map((item) => {
     if (groupByAccount[item.account]) {
@@ -22,11 +25,7 @@ const ChainDataList = () => {
     );
   });
 
-  return (
-    <div>
-      <ul>{boxes}</ul>
-    </div>
-  );
+  return <div className='chain-data-container'>{boxes}</div>;
 };
 
 export default ChainDataList;

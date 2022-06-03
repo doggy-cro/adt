@@ -1,0 +1,6 @@
+.chain-data-container {
+    font-size: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}

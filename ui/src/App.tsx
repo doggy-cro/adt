@@ -6,7 +6,7 @@ import { getChainDataFromServer, getPricesFromServer } from './middleware/thunks
 
 import ChainDataForm from './components/ChainDataForm';
 import ChainDataList from './components/ChainDataList';
-import ChartsAndCalc from './components/ChartsAndCalc';
+import Dashboard from './components/Dashboard';
 
 import './styles/app.css';
 
@@ -37,20 +37,9 @@ function App() {
         <p className='tracker'>tracker</p>
         <div className='line'></div>
       </div>
-      <div className='form'>
-        <ChainDataForm metadata={metadata}/>
-      </div>
-      <hr />
-      <div className='dashboard'>
-        <div className='cards'>
-          <ChainDataList />
-        </div>
-        <div className='charts'>
-          {/* <ChartsAndCalc /> */}
-        </div>
-        <div className='summary'></div>
-        <div className=''></div>
-      </div>
+      <ChainDataForm metadata={metadata}/>
+      <Dashboard />
+      <ChainDataList />
     </div>
   );
 }
