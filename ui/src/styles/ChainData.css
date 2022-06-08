@@ -40,6 +40,13 @@
   font-size: 12px;
 }
 
+.chain-data-container .balance-symbol-pair {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .chain-data-container p {
   padding: 4px;
 }

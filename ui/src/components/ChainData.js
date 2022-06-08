@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteChainDataRecordFromServer } from '../middleware/thunks';
 import { getPrice } from '../utils';
+import CryptoIcons from './CryptoIcons';
 
 import '../styles/ChainData.css';
-// import '../styles/styles.css';
 
 const ChainData = ({ account, content }) => {
   const [wantDelete, setWantDelete] = useState(false);
@@ -42,9 +42,12 @@ const ChainData = ({ account, content }) => {
       </div>
       {content.map((token) => (
         <div key={token.id} className='detailed-data'>
-          <p>
-            {token.balance} {token.symbol}
-          </p>
+          <div className='balance-symbol-pair'>
+            <p>
+              {token.balance} {token.symbol}
+            </p>
+            <CryptoIcons symbol={token.symbol} />
+          </div>
           <p>
             {getPrice(token.symbol, prices) > 0
               ? getPrice(token.symbol, prices)
