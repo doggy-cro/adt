@@ -5,9 +5,10 @@ import {
   deleteChainData,
 } from '../actions/chainActions';
 import { addPriceDataAll } from '../actions/priceActions';
+import { coinpaprikaIds } from '../constants';
 
 // Thunk functions
-export function getChainDataFromServer(setter: any) {
+export function getChainDataFromServer(setter: any, priceActivate: boolean) {
   return async function getChainDataFromSrv(dispatch: any, getState: any) {
     const response = await getChainData();
     if (response.status === 503) {
@@ -17,6 +18,26 @@ export function getChainDataFromServer(setter: any) {
         setter('');
       }, 3000);
       return;
+    }
+
+    if (priceActivate) {
+      let symbols = response.map((item: Object) => {
+        //@ts-ignore
+        return item?.symbol;
+      });
+      symbols = new Set(symbols);
+
+      const tickers = [];
+      for (const symbol of symbols) {
+        //@ts-ignore
+        if (coinpaprikaIds[symbol] !== undefined) {
+          //@ts-ignore
+          tickers.push(coinpaprikaIds[symbol]);
+        }
+      }
+      const getPricesFromSrv = getPricesFromServer(setter, tickers);
+      //@ts-ignore
+      dispatch(getPricesFromSrv);
     }
     dispatch(addChainDataAll(response));
   };

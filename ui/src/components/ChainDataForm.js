@@ -28,7 +28,10 @@ const ChainDataForm = ({ metadata }) => {
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
     const status = await saveChainData(data);
-    const getChainDataFromSrv = getChainDataFromServer(setServerMessageGet);
+    const getChainDataFromSrv = getChainDataFromServer(
+      setServerMessageGet,
+      false
+    );
     dispatch(getChainDataFromSrv);
     setServerMessagePost(status);
 

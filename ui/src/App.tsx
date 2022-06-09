@@ -13,23 +13,31 @@ import './styles/app.css';
 function App() {
   const [metadata, setMetadata] = useState([]);
   const [srvMsg, setSrvMsg] = useState('');
-  const [srvMsg2, setSrvMsg2] = useState('');
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("useEffect call!")
     if (metadata.length === 0) {
       getMetadata(setMetadata);
     }
 
-    const getPricesFromSrv = getPricesFromServer(setSrvMsg2, ['eth-ethereum', 'hex-hex', 'link-chainlink', 'usdc-usd-coin']);
-    //@ts-ignore
-    dispatch(getPricesFromSrv);
-    const getChainDataFromSrv = getChainDataFromServer(setSrvMsg);
+    const getChainDataFromSrv = getChainDataFromServer(setSrvMsg, true);
     //@ts-ignore
     dispatch(getChainDataFromSrv);
   }, []);
+
+  useEffect(() => {
+
+    const id = setInterval(() => {
+      const getChainDataFromSrv = getChainDataFromServer(setSrvMsg, true);
+      //@ts-ignore
+      dispatch(getChainDataFromSrv);
+    }, 10000)
+
+    return () => {
+      clearInterval(id);
+    }
+  }, [])
 
   return (
     <div className='app'>
