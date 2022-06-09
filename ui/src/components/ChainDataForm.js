@@ -51,22 +51,21 @@ const ChainDataForm = ({ metadata }) => {
       <option></option>
     );
 
-  let elements;
-  const symbolsJsx =
-    metadata.length > 0 ? (
-      metadata.map((item) => {
-        if (item.chain === watch('chain')) {
-          elements = item.coins.map((coin) => (
-            <option key={coin.symbol} value={coin.symbol}>
-              {coin.symbol}
-            </option>
-          ));
-        }
-        return elements;
-      })
-    ) : (
-      <option></option>
-    );
+  let symbolsJsx;
+  if (metadata.length > 0) {
+    for (let i = 0; i < metadata.length; i++) {
+      if (metadata[i].chain === watch('chain')) {
+        symbolsJsx = metadata[i].coins.map((coin) => (
+          <option key={coin.symbol} value={coin.symbol}>
+            {coin.symbol}
+          </option>
+        ));
+        break;
+      }
+    }
+  } else {
+    symbolsJsx = <option></option>;
+  }
 
   let pattern;
   if (metadata.length > 0) {
@@ -76,7 +75,6 @@ const ChainDataForm = ({ metadata }) => {
 
   return (
     <div>
-      {/* <legend>fill chain data and check balance</legend> */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='form-container'>
           <input
