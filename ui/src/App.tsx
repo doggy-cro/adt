@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { getMetadata } from './api';
-import { getChainDataFromServer, getPricesFromServer } from './middleware/thunks';
+import { getChainDataFromServer } from './middleware/thunks';
 
 import ChainDataForm from './components/ChainDataForm';
 import ChainDataList from './components/ChainDataList';

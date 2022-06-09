@@ -3,6 +3,7 @@ import chainDataModel from '../models/chain-data-model';
 import {
   getChainHandler,
   ethereumChain,
+  thetaChain,
   neo3Chain,
 } from '../chains/chainUtils';
 
@@ -90,7 +91,7 @@ router
 
 router.route('/form-data').get((req: Request, res: Response) => {
   try {
-    res.json({ chains: [ethereumChain, neo3Chain] });
+    res.json({ chains: [ethereumChain, thetaChain, neo3Chain] });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });

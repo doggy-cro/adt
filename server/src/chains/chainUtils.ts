@@ -1,3 +1,4 @@
+import { getBalance as thetaBalance } from './theta/thetaExplorer';
 import { getBalance as ethBalance } from './ethereum/etherscan';
 import { IChainHandler, balanceClbType, ChainDetailsI } from './chainTypes';
 
@@ -14,6 +15,15 @@ export const ethereumChain: ChainDetailsI = {
     { symbol: 'PXT', address: '0xc14830E53aA344E8c14603A91229A0b925b0B262' },
     { symbol: 'HEX', address: '0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39' },
     { symbol: 'DOS', address: '0x0A913beaD80F321E7Ac35285Ee10d9d922659cB7' },
+  ],
+  pattern: '[a-zA-Z0-9]{42}',
+};
+
+export const thetaChain: ChainDetailsI = {
+  chain: 'theta',
+  coins: [
+    { symbol: 'THETA', address: '' }, // native token
+    { symbol: 'TFUEL', address: '' }, // native fuel token
   ],
   pattern: '[a-zA-Z0-9]{42}',
 };
@@ -41,6 +51,8 @@ export const getChainHandler = (chain: string) => {
   let handler;
   if (chain === 'ethereum') {
     handler = new chainHandler(ethBalance, ethereumChain);
+  } else if (chain === 'theta') {
+    handler = new chainHandler(thetaBalance, thetaChain);
   } else if (chain === 'nep-3') {
     handler = null;
   }

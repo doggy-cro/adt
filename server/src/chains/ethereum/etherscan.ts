@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 import { balanceClbType } from '../chainTypes';
 import { QueryCls } from './ethTypes';
-import { getBalanceAction, getContractAddress } from './ethUtils';
+import { getBalanceAction } from './ethUtils';
 
 dotenv.config();
 
@@ -39,7 +39,7 @@ export const getBalance: balanceClbType = async <T>(
     );
     return balance;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return Number(-1);
   }
 };
